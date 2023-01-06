@@ -1,0 +1,13 @@
+{
+  "name": "Arduino-ForzaTelemetryAPI",
+  "version": "1.0",
+  "keywords": "wifi, esp8266",
+  "description": "Receive and parse UDP packets with telemetry data from the Forza Horizon 5 client.",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/Ldalvik/Arduino-ForzaTelemetryAPI.git"
+  },
+  "frameworks": "arduino",
+  "platforms": ["espressif8266", "espressif32"]
+}
