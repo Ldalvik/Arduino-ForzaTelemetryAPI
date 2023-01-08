@@ -67,15 +67,20 @@ long ForzaAPI::getTimestampMS()
 
 float ForzaAPI::getEngineMaxRPM()
 {
-  return round(telemetryData->EngineMaxRpm);
+  return round(telemetryData->Engine.MaxRpm);
 }
 
 float ForzaAPI::getEngineIdleRPM()
 {
-  return round(telemetryData->EngineIdleRpm);
+  return round(telemetryData->Engine.IdleRpm);
 }
 
 float ForzaAPI::getCurrentEngineRPM()
 {
-  return round(telemetryData->CurrentEngineRpm);
+  return round(telemetryData->Engine.CurrentRpm);
+}
+
+float ForzaAPI::getCarOrdinal()
+{
+  return round(telemetryData->CarOrdinal);
 }

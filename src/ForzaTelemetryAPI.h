@@ -29,6 +29,8 @@ public:
     float getEngineIdleRPM();
     float getCurrentEngineRPM();
 
+    float getCarOrdinal();
+
 private:
     // Class variables
     int port;                  // Assigned UDP port. default 5300
