@@ -61,6 +61,112 @@ struct TireSlipRatio
     f32 RearRight;
 };
 
+// Wheel rotation speed radians/sec.
+struct WheelRotationSpeed
+{
+    f32 FrontLeft;
+    f32 FrontRight;
+    f32 RearLeft;
+    f32 RearRight;
+};
+
+// = 1 when wheel is on rumble strip, = 0 when off.
+struct WheelOnRumbleStrip
+{
+    f32 FrontLeft;
+    f32 FrontRight;
+    f32 RearLeft;
+    f32 RearRight;
+};
+
+// = from 0 to 1, where 1 is the deepest puddle
+struct WheelInPuddleDepth
+{
+    f32 FrontLeft;
+    f32 FrontRight;
+    f32 RearLeft;
+    f32 RearRight;
+};
+
+struct SurfaceRumble
+{
+    f32 FrontLeft;
+    f32 FrontRight;
+    f32 RearLeft;
+    f32 RearRight;
+};
+
+struct TireSlipAngle {
+    f32 FrontLeft;
+    f32 FrontRight;
+    f32 RearLeft;
+    f32 RearRight;
+};
+
+struct TireCombinedSlip {
+    f32 FrontLeft;
+    f32 FrontRight;
+    f32 RearLeft;
+    f32 RearRight;
+};
+
+struct SuspensionTravelMeters {
+    f32 FrontLeft;
+    f32 FrontRight;
+    f32 RearLeft;
+    f32 RearRight;
+};
+
+struct Car {
+    s32 Ordinal;          // Unique ID of the car make/model
+    s32 Class;            // Between 0 (D - lowest) and 7 (X class - highest) inclusive
+    s32 PerformanceIndex; // Between 100 (lowest) and 999 (highest) inclusive
+    s32 DrivetrainType;   // 0 = FWD, 1 = RWD, 2 = AWD
+    s32 NumCylinders;     // Number of cylinders in the engine
+    s32 Type;             // Unique ID of the car make/model    
+};
+
+struct ObjectHit {
+    s8 obj1;
+    s8 obj2;
+    s8 obj3;
+    s8 obj4;
+    s8 obj5;
+    s8 obj6;
+};
+
+struct Position {
+    f32 X;
+    f32 Y;
+    f32 Z;
+};
+
+struct TireTemp {
+    f32 FrontLeft;
+    f32 FrontRight;
+    f32 RearLeft;
+    f32 RearRight;
+};
+
+struct Race {
+    f32 DistanceTraveled;
+    f32 BestLap;
+    f32 LastLap;
+    f32 CurrentLap;
+    f32 CurrentTime;
+    u16 LapNumber;
+    u8  Position;
+};
+
+struct VehicleControl {
+    u8 Accel;
+    u8 Brake;
+    u8 Clutch;
+    u8 HandBrake;
+    u8 Gear;
+    s8 Steer;
+};
+
 typedef struct _Telemetry
 {
     s32 IsRaceOn;    // = 1 when race is on. = 0 when in menus/race stopped …
@@ -72,71 +178,24 @@ typedef struct _Telemetry
     struct Rotation Rotation;
     struct NormalizedSuspensionTravel NormalizedSuspensionTravel;
     struct TireSlipRatio TireSlipRatio;
-    f32 WheelRotationSpeedFrontLeft; // Wheel rotation speed radians/sec.
-    f32 WheelRotationSpeedFrontRight;
-    f32 WheelRotationSpeedRearLeft;
-    f32 WheelRotationSpeedRearRight;
-    f32 WheelOnRumbleStripFrontLeft; // = 1 when wheel is on rumble strip, = 0 when off.
-    f32 WheelOnRumbleStripFrontRight;
-    f32 WheelOnRumbleStripRearLeft;
-    f32 WheelOnRumbleStripRearRight;
-    f32 WheelInPuddleDepthFrontLeft; // = from 0 to 1, where 1 is the deepest puddle
-    f32 WheelInPuddleDepthFrontRight;
-    f32 WheelInPuddleDepthRearLeft;
-    f32 WheelInPuddleDepthRearRight;
-    f32 SurfaceRumbleFrontLeft; // Non-dimensional surface rumble values passed to controller force feedback
-    f32 SurfaceRumbleFrontRight;
-    f32 SurfaceRumbleRearLeft;
-    f32 SurfaceRumbleRearRight;
-    f32 TireSlipAngleFrontLeft; // Tire normalized slip angle, = 0 means 100% grip and |angle| > 1.0 means loss of grip.
-    f32 TireSlipAngleFrontRight;
-    f32 TireSlipAngleRearLeft;
-    f32 TireSlipAngleRearRight;
-    f32 TireCombinedSlipFrontLeft; // Tire normalized combined slip, = 0 means 100% grip and |slip| > 1.0 means loss of grip.
-    f32 TireCombinedSlipFrontRight;
-    f32 TireCombinedSlipRearLeft;
-    f32 TireCombinedSlipRearRight;
-    f32 SuspensionTravelMetersFrontLeft; // Actual suspension travel in meters
-    f32 SuspensionTravelMetersFrontRight;
-    f32 SuspensionTravelMetersRearLeft;
-    f32 SuspensionTravelMetersRearRight;
-    s32 CarOrdinal;          // Unique ID of the car make/model
-    s32 CarClass;            // Between 0 (D - lowest) and 7 (X class - highest) inclusive
-    s32 CarPerformanceIndex; // Between 100 (lowest) and 999 (highest) inclusive
-    s32 DrivetrainType;      // 0 = FWD, 1 = RWD, 2 = AWD
-    s32 NumCylinders;        // Number of cylinders in the engine
-    s32 CarType;             // Unique ID of the car make/model
-    s8 obj1;
-    s8 obj2;
-    s8 obj3;
-    s8 obj4;
-    s8 obj5;
-    s8 obj6;
-    f32 PositionX;
-    f32 PositionY;
-    f32 PositionZ;
+    struct WheelRotationSpeed WheelRotationSpeed;
+    struct WheelOnRumbleStrip WheelOnRumbleStrip;
+    struct WheelInPuddleDepth WheelInPuddleDepth;
+    struct SurfaceRumble SurfaceRumble;
+    struct TireSlipAngle TireSlipAngle;
+    struct TireCombinedSlip TireCombinedSlip;
+    struct SuspensionTravelMeters SuspensionTravelMeters;
+    struct Car Car;
+    struct ObjectHit ObjectHit;
+    struct Position Position;
     f32 Speed;  // meters per second
     f32 Power;  // watts
     f32 Torque; // newton meter
-    f32 TireTempFrontLeft;
-    f32 TireTempFrontRight;
-    f32 TireTempRearLeft;
-    f32 TireTempRearRight;
+    struct TireTemp TireTemp;
     f32 Boost;
     f32 Fuel;
-    f32 DistanceTraveled;
-    f32 BestLap;
-    f32 LastLap;
-    f32 CurrentLap;
-    f32 CurrentRaceTime;
-    u16 LapNumber;
-    u8 RacePosition;
-    u8 Accel;
-    u8 Brake;
-    u8 Clutch;
-    u8 HandBrake;
-    u8 Gear;
-    s8 Steer;
+    struct Race Race;
+    struct VehicleControl VehicleControl;
     s8 NormalizedDrivingLine;
     s8 NormalizedAIBrakeDifference;
     u8 padding;
