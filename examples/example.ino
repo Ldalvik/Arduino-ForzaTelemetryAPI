@@ -66,7 +66,7 @@ void onGamePaused() {
 }
 
 /* 
- * OnGamePaused - this will be called ONCE when the player unpauses the game. Data will begin to be 
+ * OnGameUnpaused - this will be called ONCE when the player unpauses the game. Data will begin to be 
  * received in OnDataReceived.
  */
 void onGameUnpaused() {
