@@ -23,59 +23,101 @@ bool ForzaAPI::parse()
     int length = UDP.read(packetData, PACKET_SIZE);
     if (length > 0)
     {
-      telemetryData = (Telemetry*) packetData;
+      telemetryData = (Telemetry *)packetData;
       return true;
-    } else return false;
-  } else return false;
+    }
+    else
+      return false;
+  }
+  else
+    return false;
 }
 
 void ForzaAPI::receive(OnDataReceived onDataReceived, OnCarChanged onCarChanged,
-                 OnGamePaused onGamePaused, OnGameUnpaused onGameUnpaused)
+                       OnGamePaused onGamePaused, OnGameUnpaused onGameUnpaused)
 {
   if (parse())
   {
-    if (!getIsRaceOn() && !isPaused)
+    if (!telemetryData->IsRaceOn && !isPaused)
     {
       onGamePaused();
       isPaused = true;
     }
-    else if (getIsRaceOn() && isPaused)
+    else if (telemetryData->IsRaceOn && isPaused)
     {
       onGameUnpaused();
       isPaused = false;
     }
 
-    if(getCarOrdinal() != lastOrdinal && !isPaused)
+    if (telemetryData->Car.Ordinal != lastOrdinal && !isPaused)
     {
       onCarChanged();
-      lastOrdinal = getCarOrdinal();
+      lastOrdinal = telemetryData->Car.Ordinal;
     }
 
-    if (!isPaused) onDataReceived();
+    if (!isPaused) // Remove this line if you want data to be received when the game is paused
+      onDataReceived();
   }
 }
 
-int ForzaAPI::getIsRaceOn()
+// telemetryData->TireSlipAngle.FrontLeft * 180 / M_PI
+
+char *ForzaAPI::getCarClass()
 {
-  return telemetryData->IsRaceOn;
+  switch (telemetryData->Car.Class)
+  {
+  case 0:
+    return 'D' break;
+  case 1:
+    return 'C' break;
+  case 2:
+    return 'B' break;
+  case 3:
+    return 'A' break;
+  case 4:
+    return 'S1' break;
+  case 5:
+    return 'S2' break;
+  case 6:
+    return 'X' break;
+  default:
+    return '-' break;
+  }
 }
 
-long ForzaAPI::getTimestampMS()
+char * ForzaAPI::getCarDrivetrainType()
 {
-  return telemetryData->TimestampMS;
+ switch (telemetryData->Car.DrivetrainType)
+  {
+  case 0:
+    return 'FWD' break;
+  case 1:
+    return 'RWD' break;
+  case 2:
+    return 'AWD' break;
+  default:
+    return '-' break;
+  }
 }
 
-float ForzaAPI::getEngineMaxRPM()
+char * ForzaAPI::getCarType()
 {
-  return round(telemetryData->EngineMaxRpm);
-}
-
-float ForzaAPI::getEngineIdleRPM()
-{
-  return round(telemetryData->EngineIdleRpm);
-}
-
-float ForzaAPI::getCurrentEngineRPM()
-{
-  return round(telemetryData->CurrentEngineRpm);
+  switch (telemetryData->Car.Type)
+  {
+  case 11:
+    return "Modern Super Cars" break;
+  case 12:
+    return "Retro Super Cars" break;
+  case 13:
+    return "Hyper Cars" break;
+  case 14:
+    return "Retro Saloons" break;
+  case 16:
+    return "Vans & Utility" break;
+  case 17:
+    return "Retro Sports Cars" break;
+ 
+  default:
+    return '-' break;
+  }
 }
