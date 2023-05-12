@@ -8,7 +8,7 @@
 const char* SSID = "WiFi_SSID";
 const char* PASSWORD = "WiFi_Password";
 
-#define UDP_PORT 5300 // Port to read data from - make sure you use the same port in-game.
+int UDP_PORT = 5300 // Port to read data from - make sure you use the same port in-game.
 
 ForzaAPI forza(UDP_PORT);
 
@@ -23,7 +23,7 @@ void setup() {
   }
 
   // This is the device IP for your ESP board - make sure you use the same address in-game.
-  Serial.print("Connected! IP address: ");
+  Serial.print("Connected! IP address (use this in-game): ");
   Serial.println(WiFi.localIP());
 
   Serial.println("Searching for data stream...");

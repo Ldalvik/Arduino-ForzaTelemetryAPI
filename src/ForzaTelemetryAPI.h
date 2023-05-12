@@ -22,80 +22,9 @@ public:
     void receive(OnDataReceived onDataReceived, OnCarChanged onCarChanged,
                  OnGamePaused onGamePaused, OnGameUnpaused onGameUnpaused);
 
-    int getIsRaceOn();
-    long getTimestampMS();
-
-    int getEngineMaxRpm();
-    int getEngineIdleRpm();
-    int getEngineCurrentRpm();
-
-    int getAccelerationX();
-    int getAccelerationY();
-    int getAccelerationZ();
-
-    int getVelocityX();
-    int getVelocityY();
-    int getVelocityZ();
-
-    int getAngularVelocityX();
-    int getAngularVelocityY();
-    int getAngularVelocityZ();
-
-    int getRotationYaw();
-    int getRotationPitch();
-    int getRotationRoll();
-
-    // float getNormalizedSuspensionTravelFrontLeft();
-    // float getNormalizedSuspensionTravelFrontRight();
-    // float getNormalizedSuspensionTravelRearLeft();
-    // float getNormalizedSuspensionTravelRearRight();
-    
-    // float getTireSlipRatioFrontLeft();
-    // float getTireSlipRatioFrontRight();
-    // float getTireSlipRatioRearLeft();
-    // float getTireSlipRatioRearRight();
-
-    // int getWheelRotationSpeedFrontLeft();
-    // int getWheelRotationSpeedFrontRight();
-    // int getWheelRotationSpeedRearLeft();
-    // int getWheelRotationSpeedRearRight();
-
-    // float getWheelOnRumbleStripFrontLeft();
-    // float getWheelOnRumbleStripFrontRight();
-    // float getWheelOnRumbleStripRearLeft();
-    // float getWheelOnRumbleStripRearRight();
-
-    // float getWheelInPuddleDepthFrontLeft();
-    // float getWheelInPuddleDepthFrontRight();
-    // float getWheelInPuddleDepthRearLeft();
-    // float getWheelInPuddleDepthRearRight();
-
-    // float getSurfaceRumbleFrontLeft();
-    // float getSurfaceRumbleFrontRight();
-    // float getSurfaceRumbleRearLeft();
-    // float getSurfaceRumbleRearRight();
-    
-    // float getTireSlipAngleFrontLeft();
-    // float getTireSlipAngleFrontRight();
-    // float getTireSlipAngleRearLeft();
-    // float getTireSlipAngleRearRight();
-
-    // float getTireCombinedSlipFrontLeft();
-    // float getTireCombinedSlipFrontRight();
-    // float getTireCombinedSlipRearLeft();
-    // float getTireCombinedSlipRearRight();
-
-    // float getSuspensionTravelMetersFrontLeft();
-    // float getSuspensionTravelMetersFrontRight();
-    // float getSuspensionTravelMetersRearLeft();
-    // float getSuspensionTravelMetersRearRight();
-
-    int getCarOrdinal();
-    // int getCarClass();
-    // int getCarPerformanceIndex();
-    // int getCarDrivetrainType();
-    // int getCarNumCylinders();
-    // int getCarType();
+    char * getCarClass();
+    char * getCarDrivetrainType();
+    char * getCarType();
 
     // // ObjectHit is 2 ints or 1 long?
     // // unsigned char getObjectHit_1();
@@ -149,7 +78,7 @@ private:
     // Class variables
     int port;                  // Assigned UDP port. default 5300
     bool isPaused = false;     // Track last game state
-    short lastOrdinal = false; // Track last game state
+    short lastOrdinal = false; // Track last car ordinal
     WiFiUDP UDP;               // UDP connection class
 };
 
