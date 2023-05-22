@@ -162,14 +162,14 @@ struct VehicleControl {
     u8 Accel;
     u8 Brake;
     u8 Clutch;
-    u8 HandBrake;
+    u8 Handbrake;
     u8 Gear;
     s8 Steer;
 };
 
 typedef struct _Telemetry
 {
-    s32 IsRaceOn;    // = 1 when race is on. = 0 when in menus/race stopped …
+    s32 IsRaceOn;    // = 1 when race is on. = 0 when in menus/race stopped
     u32 TimestampMS; // Can overflow to 0 eventually
     struct Engine Engine;
     struct Acceleration Acceleration;
@@ -190,7 +190,7 @@ typedef struct _Telemetry
     struct Position Position;
     f32 Speed;  // meters per second
     f32 Power;  // watts
-    f32 Torque; // newton meter
+    f32 Torque; // newtons
     struct TireTemp TireTemp;
     f32 Boost;
     f32 Fuel;

@@ -22,57 +22,29 @@ public:
     void receive(OnDataReceived onDataReceived, OnCarChanged onCarChanged,
                  OnGamePaused onGamePaused, OnGameUnpaused onGameUnpaused);
 
-    char * getCarClass();
-    char * getCarDrivetrainType();
-    char * getCarType();
+    char * getCar_Class();
+    char * getCar_DrivetrainType();
+    char * getCar_Type();
 
-    // // ObjectHit is 2 ints or 1 long?
-    // // unsigned char getObjectHit_1();
-    // // unsigned char getObjectHit_2();
-    // // unsigned char getObjectHit_3();
-    // // unsigned char getObjectHit_4();
-    // // unsigned char getObjectHit_5();
-    // // unsigned char getObjectHit_6();
-    // // unsigned char getObjectHit_7();
-    // // unsigned char getObjectHit_8();
+    int getTireSlipAngle_FrontLeft():
+    int getTireSlipAngle_FrontRight():
+    int getTireSlipAngle_RearLeft():
+    int getTireSlipAngle_RearRight():
 
-    // int getPositionX();
-    // int getPositionY();
-    // int getPositionZ();
+    int getSpeed_KPH();
+    int getSpeed_MPH();
+
+    int getPower_Horsepower();
     
-    // int getSpeed_MetersPerSecond();
-    // int getSpeed_MilesPerHour();
-    // int getSpeed_KilometersPerHour();
+    int getAccel();
+    int getBrake();
+    int getClutch();
+    int getHandbrake();
+    int getGear();
+    int getSteer();
 
-    // int getPower_Watts();
-    // int getPower_Horsepower();
-    // int getTorque();
-    
-    // float getTireTempFrontLeft();
-    // float getTireTempFrontRight();
-    // float getTireTempMetersRearLeft();
-    // float getTireTempRearRight();
-
-    // float getBoost();
-    // float getFuel();
-
-    // int getRaceDistanceTraveled();
-    // int getRaceBestLap();
-    // int getRaceLastLap();
-    // int getRaceCurrentLap();
-    // int getRaceCurrentTime();
-    // int getRaceLapNumber();
-    // int getRacePosition();
-
-    // int getAccel();
-    // int getBrake();
-    // int getClutch();
-    // int getHandBrake();
-    // int getGear();
-    // int getSteer();
-
-    // int getNormalizedDrivingLine();
-    // int getNormalizedAIBrakeDifference();
+    int getNormalizedDrivingLine();
+    int getNormalizedAIBrakeDifference();
     
 private:
     // Class variables
