@@ -11,6 +11,7 @@ const char* PASSWORD = "WiFi_Password";
 int UDP_PORT = 5300 // Port to read data from - make sure you use the same port in-game.
 
 ForzaAPI forza(UDP_PORT);
+Telemetry telemetryData;
 
 void setup() {
   Serial.begin(115200);
@@ -26,7 +27,7 @@ void setup() {
   Serial.print("Connected! IP address (use this in-game): ");
   Serial.println(WiFi.localIP());
 
-  Serial.println("Searching for data stream...");
+  Serial.println("Waiting for data stream...");
 
   forza.connect();                // Begin UDP connection
   while (!forza.isConnected()) {} // Wait for the first stream of data to come in
@@ -47,11 +48,13 @@ void onDataReceived() {
  * All relevant data is under the "Car" struct, otherwise use the helper methods which may return more descriptive data.
  */
 void onCarChanged() {
-  Serial.print("New car Performance Index (Number): ");
+  Serial.print("Car changed!");
+
+  Serial.print("Performance Index (Number): ");
   Serial.println(forza.telemetryData->Car.PerformanceIndex); // Returns number value of PI
 
-  Serial.print("New car Performance Index (Class): ");
-  Serial.println(forza.getCarPerformanceIndex()); // Returns text value of PI
+  Serial.print("Performance Index (Class): ");
+  Serial.println(forza.getCar_Class()); // Returns text value of PI
 }
 
 /* 
@@ -62,7 +65,7 @@ void onCarChanged() {
 */
 void onGamePaused() {
   Serial.print("Game paused at ");
-  Serial.println(forza.getTimestampMS());
+  Serial.println(forza.telemetryData->TimestampMS);
 }
 
 /* 
@@ -71,7 +74,7 @@ void onGamePaused() {
  */
 void onGameUnpaused() {
   Serial.print("Game unpaused at ");
-  Serial.println(forza.getTimestampMS());
+  Serial.println(forza.telemetryData->TimestampMS);
 }
 
 void loop() {
