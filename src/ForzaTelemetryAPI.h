@@ -8,50 +8,34 @@ class ForzaAPI
 {
 public:
     const int PACKET_SIZE = 324;
-    Telemetry *telemetryData;
 
-    typedef void (*OnDataReceived)();
-    typedef void (*OnCarChanged)  ();
-    typedef void (*OnGamePaused)  ();
-    typedef void (*OnGameUnpaused)();
+    typedef void (*OnDataReceived)(Telemetry *telemetryData);
+    typedef void (*OnCarChanged)(Car car, short ordinal);
+    typedef void (*OnGamePaused)(Telemetry *telemetryData);
+    typedef void (*OnGameUnpaused)(Telemetry *telemetryData);
 
-    ForzaAPI(const int port);
+    ForzaAPI(const int port = 5300);
     void connect();
     bool isConnected();
     bool parse();
     void receive(OnDataReceived onDataReceived, OnCarChanged onCarChanged,
                  OnGamePaused onGamePaused, OnGameUnpaused onGameUnpaused);
 
-    char * getCarClass();
-    char * getCarDrivetrainType();
-    char * getCarType();
-
-    // // ObjectHit is 2 ints or 1 long?
-    // // unsigned char getObjectHit_1();
-    // // unsigned char getObjectHit_2();
-    // // unsigned char getObjectHit_3();
-    // // unsigned char getObjectHit_4();
-    // // unsigned char getObjectHit_5();
-    // // unsigned char getObjectHit_6();
-    // // unsigned char getObjectHit_7();
-    // // unsigned char getObjectHit_8();
-
-    // int getPositionX();
-    // int getPositionY();
-    // int getPositionZ();
+    int getTireSlipAngle_FrontLeft();
+    int getTireSlipAngle_FrontRight();
+    int getTireSlipAngle_RearLeft();
+    int getTireSlipAngle_RearRight();
     
-    // int getSpeed_MetersPerSecond();
-    // int getSpeed_MilesPerHour();
-    // int getSpeed_KilometersPerHour();
+    String getCarClass();
+    String getCarDrivetrainType();
+    String getCarType();
 
-    // int getPower_Watts();
-    // int getPower_Horsepower();
-    // int getTorque();
-    
-    // float getTireTempFrontLeft();
-    // float getTireTempFrontRight();
-    // float getTireTempMetersRearLeft();
-    // float getTireTempRearRight();
+    float getSpeed_MetersPerSecond();
+    float getSpeed_MilesPerHour();
+    float getSpeed_KilometersPerHour();
+
+    float getPower_Watts();
+    float getPower_Horsepower();
 
     // float getBoost();
     // float getFuel();
@@ -73,13 +57,13 @@ public:
 
     // int getNormalizedDrivingLine();
     // int getNormalizedAIBrakeDifference();
-    
+
 private:
-    // Class variables
     int port;                  // Assigned UDP port. default 5300
     bool isPaused = false;     // Track last game state
-    short lastOrdinal = false; // Track last car ordinal
+    short lastOrdinal = 0; // Track last car ordinal
     WiFiUDP UDP;               // UDP connection class
+    Telemetry *telemetryData;  // Telemetry data schema
 };
 
 #endif
