@@ -118,7 +118,6 @@ struct SuspensionTravelMeters {
 };
 
 struct Car {
-    s32 Ordinal;          // Unique ID of the car make/model
     s32 Class;            // Between 0 (D - lowest) and 7 (X class - highest) inclusive
     s32 PerformanceIndex; // Between 100 (lowest) and 999 (highest) inclusive
     s32 DrivetrainType;   // 0 = FWD, 1 = RWD, 2 = AWD
@@ -169,34 +168,35 @@ struct VehicleControl {
 
 typedef struct _Telemetry
 {
-    s32 IsRaceOn;    // = 1 when race is on. = 0 when in menus/race stopped …
-    u32 TimestampMS; // Can overflow to 0 eventually
-    struct Engine Engine;
-    struct Acceleration Acceleration;
-    struct Velocity Velocity;
-    struct AngularVelocity AngularVelocity;
-    struct Rotation Rotation;
-    struct NormalizedSuspensionTravel NormalizedSuspensionTravel;
-    struct TireSlipRatio TireSlipRatio;
-    struct WheelRotationSpeed WheelRotationSpeed;
-    struct WheelOnRumbleStrip WheelOnRumbleStrip;
-    struct WheelInPuddleDepth WheelInPuddleDepth;
-    struct SurfaceRumble SurfaceRumble;
-    struct TireSlipAngle TireSlipAngle;
-    struct TireCombinedSlip TireCombinedSlip;
-    struct SuspensionTravelMeters SuspensionTravelMeters;
-    struct Car Car;
-    struct ObjectHit ObjectHit;
-    struct Position Position;
-    f32 Speed;  // meters per second
-    f32 Power;  // watts
-    f32 Torque; // newton meter
-    struct TireTemp TireTemp;
-    f32 Boost;
-    f32 Fuel;
-    struct Race Race;
-    struct VehicleControl VehicleControl;
-    s8 NormalizedDrivingLine;
-    s8 NormalizedAIBrakeDifference;
+    s32 IsRaceOn;    // 1 when race is on, 0 when in menus/race stopped
+    u32 TimestampMS; // Current in-game timestamp. Overflows eventually
+    struct Engine Engine; // RPM values from the engine
+    struct Acceleration Acceleration; // X/Y/Z acceleration values for vehicle
+    struct Velocity Velocity; // X/Y/Z velocity values for vehicle
+    struct AngularVelocity AngularVelocity; // X/Y/Z angular velocity values for vehicle
+    struct Rotation Rotation; // X/Y/Z rotation value for vehicle
+    struct NormalizedSuspensionTravel NormalizedSuspensionTravel; // Spring extension/compression values
+    struct TireSlipRatio TireSlipRatio;                   //
+    struct WheelRotationSpeed WheelRotationSpeed;         // Raw wheel rotation speed
+    struct WheelOnRumbleStrip WheelOnRumbleStrip;         // Tire rumble values
+    struct WheelInPuddleDepth WheelInPuddleDepth;         // Water depth values
+    struct SurfaceRumble SurfaceRumble;                   // Full vehicle rumble values
+    struct TireSlipAngle TireSlipAngle;                   // 
+    struct TireCombinedSlip TireCombinedSlip;             // 
+    struct SuspensionTravelMeters SuspensionTravelMeters; // How far the suspension is traveling. 0.0 means fully decompressed and 1.0 means fully compressed
+    struct Car Car;              // Car specific info like specs and metadata
+    struct ObjectHit ObjectHit;  // Activates when hitting breakable objects- nobody really knows what it means
+    s32 Ordinal;                 // Unique ID of the car make/model
+    struct Position Position;    // Vehicle postion in the world
+    f32 Speed;  // Speed in meters per second
+    f32 Power;  // Power in watts
+    f32 Torque; // Power in newtons/meter
+    struct TireTemp TireTemp; // Tire temperature in F for all 4 tires
+    f32 Boost;                // Boost gauge in PSI
+    f32 Fuel;                 // % of much fuel you have left, only used in sim mode races 
+    struct Race Race;         // Information about the current race if you're in one
+    struct VehicleControl VehicleControl;   // Inputs received from the controller mapped to vehicle actions
+    s8 NormalizedDrivingLine;               // Driving line follow accuracy
+    s8 NormalizedAIBrakeDifference;         //
     u8 padding;
 } Telemetry;
