@@ -39,6 +39,7 @@ void setup() {
  * once every 33.33ms, or 30 frames per second. Data will not be received here if the game is paused.
  */
 void onDataReceived() {
+  // todo: show all data by adding every data type + helper method
   Serial.println(forza.telemetryData->Engine.CurrentRpm);
 }
 
