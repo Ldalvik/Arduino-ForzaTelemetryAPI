@@ -21,16 +21,14 @@ bool ForzaAPI::parse()
   if (UDP.parsePacket() == PACKET_SIZE)
   {
     int length = UDP.read(packetData, PACKET_SIZE);
-    if (length > 0)
+    if (length == PACKET_SIZE)
     {
       memcpy(&telemetryData, packetData, sizeof(Telemetry));
+      memcpy(&rawTelemetryData, packetData, sizeof(RawTelemetry));
       return true;
     }
-    else
-      return false;
   }
-  else
-    return false;
+  return false;
 }
 
 void ForzaAPI::receive(OnDataReceived onDataReceived, OnCarChanged onCarChanged,
@@ -38,28 +36,32 @@ void ForzaAPI::receive(OnDataReceived onDataReceived, OnCarChanged onCarChanged,
 {
   if (parse())
   {
-    if (!telemetryData.IsRaceOn && !isPaused)
+    if (!rawTelemetryData.IsRaceOn && !isPaused)
     {
-      onGamePaused(telemetryData);
+      onGamePaused(rawTelemetryData);
       isPaused = true;
     }
-    else if (telemetryData.IsRaceOn && isPaused)
+    else if (rawTelemetryData.IsRaceOn && isPaused)
     {
-      onGameUnpaused(telemetryData);
+      onGameUnpaused(rawTelemetryData);
       isPaused = false;
     }
 
-    if (telemetryData.Car.Ordinal != lastOrdinal && !isPaused)
+    if (rawTelemetryData.CarOrdinal != lastOrdinal && !isPaused)
     {
       onCarChanged(telemetryData.Car);
-      lastOrdinal = telemetryData.Car.Ordinal;
+      lastOrdinal = rawTelemetryData.CarOrdinal;
     }
-
-    if (!isPaused) // Remove this line if you want data to be received when the game is paused
-      onDataReceived(telemetryData);
+    // else         // Uncomment this line if you are handling the onCarChanged frame inside the onCarChanged function
+    if (!isPaused) // Comment out this line if you want data to be received when the game is paused
+      onDataReceived(rawTelemetryData);
   }
 }
 
+// Helper funtions
+// There's a lot of raw data that needs to be converted to be used effectively
+
+// Conversion from radians to degrees
 int ForzaAPI::getTireSlipAngle_FrontLeft()
 {
   return telemetryData.TireSlipAngle.FrontLeft * 180 / M_PI;
@@ -227,11 +229,6 @@ String ForzaAPI::getCarType()
   }
 }
 
-float ForzaAPI::getSpeed_MetersPerSecond()
-{
-  return telemetryData.Speed;
-}
-
 float ForzaAPI::getSpeed_MilesPerHour()
 {
   return telemetryData.Speed * 2.23694;
@@ -242,12 +239,16 @@ float ForzaAPI::getSpeed_KilometersPerHour()
   return telemetryData.Speed * 3.6;
 }
 
-float ForzaAPI::getPower_Watts()
-{
-  return telemetryData.Torque;
-}
-
 float ForzaAPI::getPower_Horsepower()
 {
   return telemetryData.Power * 0.00134102;
+}
+
+float ForzaAPI::getSteeringAngle()
+{
+  if (steer <= 100)
+  {
+    return static_cast<float>(steer) - 100.0;
+  }
+  return 100.0 - static_cast<float>(steer - 200);
 }
