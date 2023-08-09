@@ -23,7 +23,7 @@ bool ForzaAPI::parse()
     int length = UDP.read(packetData, PACKET_SIZE);
     if (length > 0)
     {
-      telemetryData = (Telemetry *)packetData;
+      memcpy(&telemetryData, packetData, sizeof(Telemetry));
       return true;
     }
     else
@@ -38,21 +38,21 @@ void ForzaAPI::receive(OnDataReceived onDataReceived, OnCarChanged onCarChanged,
 {
   if (parse())
   {
-    if (!telemetryData->IsRaceOn && !isPaused)
+    if (!telemetryData.IsRaceOn && !isPaused)
     {
       onGamePaused(telemetryData);
       isPaused = true;
     }
-    else if (telemetryData->IsRaceOn && isPaused)
+    else if (telemetryData.IsRaceOn && isPaused)
     {
       onGameUnpaused(telemetryData);
       isPaused = false;
     }
 
-    if (telemetryData->Ordinal != lastOrdinal && !isPaused)
+    if (telemetryData.Car.Ordinal != lastOrdinal && !isPaused)
     {
-      onCarChanged(telemetryData->Car, telemetryData->Ordinal);
-      lastOrdinal = telemetryData->Ordinal;
+      onCarChanged(telemetryData.Car);
+      lastOrdinal = telemetryData.Car.Ordinal;
     }
 
     if (!isPaused) // Remove this line if you want data to be received when the game is paused
@@ -62,27 +62,27 @@ void ForzaAPI::receive(OnDataReceived onDataReceived, OnCarChanged onCarChanged,
 
 int ForzaAPI::getTireSlipAngle_FrontLeft()
 {
-  return telemetryData->TireSlipAngle.FrontLeft * 180 / M_PI;
+  return telemetryData.TireSlipAngle.FrontLeft * 180 / M_PI;
 }
 
 int ForzaAPI::getTireSlipAngle_FrontRight()
 {
-  return telemetryData->TireSlipAngle.FrontRight * 180 / M_PI;
+  return telemetryData.TireSlipAngle.FrontRight * 180 / M_PI;
 }
 
 int ForzaAPI::getTireSlipAngle_RearLeft()
 {
-  return telemetryData->TireSlipAngle.RearLeft * 180 / M_PI;
+  return telemetryData.TireSlipAngle.RearLeft * 180 / M_PI;
 }
 
 int ForzaAPI::getTireSlipAngle_RearRight()
 {
-  return telemetryData->TireSlipAngle.RearRight * 180 / M_PI;
+  return telemetryData.TireSlipAngle.RearRight * 180 / M_PI;
 }
 
 String ForzaAPI::getCarClass()
 {
-  switch (telemetryData->Car.Class)
+  switch (telemetryData.Car.Class)
   {
   case 0:
     return "D";
@@ -113,7 +113,7 @@ String ForzaAPI::getCarClass()
 
 String ForzaAPI::getCarDrivetrainType()
 {
-  switch (telemetryData->Car.DrivetrainType)
+  switch (telemetryData.Car.DrivetrainType)
   {
   case 0:
     return "FWD";
@@ -132,7 +132,7 @@ String ForzaAPI::getCarDrivetrainType()
 
 String ForzaAPI::getCarType()
 {
-  switch (telemetryData->Car.Type)
+  switch (telemetryData.Car.Type)
   {
   case 11:
     return "Modern Super Cars";
@@ -229,25 +229,25 @@ String ForzaAPI::getCarType()
 
 float ForzaAPI::getSpeed_MetersPerSecond()
 {
-  return telemetryData->Speed;
+  return telemetryData.Speed;
 }
 
 float ForzaAPI::getSpeed_MilesPerHour()
 {
-  return telemetryData->Speed * 2.23694;
+  return telemetryData.Speed * 2.23694;
 }
 
 float ForzaAPI::getSpeed_KilometersPerHour()
 {
-  return telemetryData->Speed * 3.6;
+  return telemetryData.Speed * 3.6;
 }
 
 float ForzaAPI::getPower_Watts()
 {
-  return telemetryData->Torque;
+  return telemetryData.Torque;
 }
 
 float ForzaAPI::getPower_Horsepower()
 {
-  return telemetryData->Torque * 0.00134102;
+  return telemetryData.Torque * 0.00134102;
 }
