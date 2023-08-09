@@ -209,42 +209,122 @@ typedef struct _Telemetry
     u8 NormalizedAIBrakeDifference;                               //
 } Telemetry;
 
+// Raw telemetry for more explicit access by name
 typedef struct _RawTelemetry
 {
-    s32 IsRaceOn;    // 1 when race is on, 0 when in menus/race stopped
-    u32 TimestampMS; // Current in-game timestamp. Overflows eventually
-    
+    s32 IsRaceOn; 
+    u32 TimestampMS;
+
     f32 EngineMaxRpm;
     f32 EngineIdleRpm;
     f32 EngineCurrentRpm;
-    
-    f32 AccelerationX; 
-    f32 AccelerationY; 
-    f32 AccelerationZ; 
-    
-    struct Velocity Velocity;                                     // X/Y/Z velocity values for vehicle
-    struct AngularVelocity AngularVelocity;                       // X/Y/Z angular velocity values for vehicle
-    struct Rotation Rotation;                                     // X/Y/Z rotation value for vehicle
-    struct NormalizedSuspensionTravel NormalizedSuspensionTravel; // Spring extension/compression values
-    struct TireSlipRatio TireSlipRatio;                           //
-    struct WheelRotationSpeed WheelRotationSpeed;                 // Raw wheel rotation speed
-    struct WheelOnRumbleStrip WheelOnRumbleStrip;                 // Tire rumble values
-    struct WheelInPuddleDepth WheelInPuddleDepth;                 // Water depth values
-    struct SurfaceRumble SurfaceRumble;                           // Full vehicle rumble values
-    struct TireSlipAngle TireSlipAngle;                           //
-    struct TireCombinedSlip TireCombinedSlip;                     //
-    struct SuspensionTravelMeters SuspensionTravelMeters;         // How far the suspension is traveling. 0.0 means fully decompressed and 1.0 means fully compressed
-    struct Car Car;                                               // Car specific info like specs and metadata
-    struct ObjectHit ObjectHit;                                   // Activates when hitting breakable objects- nobody really knows what it means
-    struct Position Position;                                     // Vehicle postion in the world
-    f32 Speed;                                                    // Speed in meters per second
-    f32 Power;                                                    // Power in watts
-    f32 Torque;                                                   // Power in newtons/meter
-    struct TireTemp TireTemp;                                     // Tire temperature in F for all 4 tires
-    f32 Boost;                                                    // Boost gauge in PSI
-    f32 Fuel;                                                     // % of much fuel you have left, only used in sim mode races
-    struct Race Race;                                             // Information about the current race if you're in one
-    struct VehicleControl VehicleControl;                         // Inputs received from the controller mapped to vehicle actions
-    u8 NormalizedDrivingLine;                                     // Driving line follow accuracy
-    u8 NormalizedAIBrakeDifference;                               //
+
+    f32 AccelerationX;
+    f32 AccelerationY;
+    f32 AccelerationZ;
+
+    f32 VelocityX;
+    f32 VelocityY;
+    f32 VelocityZ;
+
+    f32 AngularVelocityX;
+    f32 AngularVelocityY;
+    f32 AngularVelocityZ;
+
+    f32 RotationX;
+    f32 RotationY;
+    f32 RotationZ;
+
+    f32 NormalizedSuspensionTravelFrontLeft;
+    f32 NormalizedSuspensionTravelFrontRight;
+    f32 NormalizedSuspensionTravelRearLeft;
+    f32 NormalizedSuspensionTravelRearRight;
+
+    f32 TireSlipRatioFrontLeft;
+    f32 TireSlipRatioFrontRight;
+    f32 TireSlipRatioRearLeft;
+    f32 TireSlipRatioRearRight;
+
+    f32 WheelRotationSpeedFrontLeft;
+    f32 WheelRotationSpeedFrontRight;
+    f32 WheelRotationSpeedRearLeft;
+    f32 WheelRotationSpeedRearRight;
+
+    f32 WheelOnRumbleStripFrontLeft;
+    f32 WheelOnRumbleStripFrontRear;
+    f32 WheelOnRumbleStripRearLeft;
+    f32 WheelOnRumbleStripRearRight;
+
+    f32 WheelInPuddleDepthFrontLeft;
+    f32 WheelInPuddleDepthFrontRight;
+    f32 WheelInPuddleDepthRearLeft;
+    f32 WheelInPuddleDepthRearRight;
+
+    f32 SurfaceRumbleFrontLeft;
+    f32 SurfaceRumbleFrontRight;
+    f32 SurfaceRumbleRearLeft;
+    f32 SurfaceRumbleRearRight;
+
+    f32 TireSlipAngleFrontLeft;
+    f32 TireSlipAngleFrontRight;
+    f32 TireSlipAngleRearLeft;
+    f32 TireSlipAngleRearRight;
+
+    f32 TireCombinedSlipFrontLeft;
+    f32 TireCombinedSlipFrontRight;
+    f32 TireCombinedSlipRearLeft;
+    f32 TireCombinedSlipRearRight;
+
+    f32 SuspensionTravelMetersFrontLeft;
+    f32 SuspensionTravelMetersFrontRight;
+    f32 SuspensionTravelMetersRearLeft;
+    f32 SuspensionTravelMetersRearRight;
+
+    s32 CarOrdinal;
+    s32 CarClass;
+    s32 CarPerformanceIndex;
+    s32 CarDrivetrainType;
+    s32 CarNumCylinders;
+    s32 CarType;
+
+    s8 obj1;
+    s8 obj2;
+    s8 obj3;
+    s8 obj4;
+    s8 obj5;
+    s8 obj6;
+
+    f32 PositionX;
+    f32 PositionY;
+    f32 PositionZ;
+
+    f32 Speed;
+    f32 Power;
+    f32 Torque;
+
+    f32 TireTempFrontLeft;
+    f32 TireTempFrontRight;
+    f32 TireTempRearLeft;
+    f32 TireTempRearRight;
+
+    f32 Boost;
+    f32 Fuel;
+
+    f32 RaceDistanceTraveled;
+    f32 RaceBestLap;
+    f32 RaceLastLap;
+    f32 RaceCurrentLap;
+    f32 RaceCurrentTime;
+    u16 RaceLapNumber;
+    u8  RacePosition;
+
+    u8 Accel;
+    u8 Brake;
+    u8 Clutch;
+    u8 Handbrake;
+    u8 Gear;
+    u8 Steer;
+
+    u8 NormalizedDrivingLine;
+    u8 NormalizedAIBrakeDifference;
 } RawTelemetry;
