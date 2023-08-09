@@ -1,35 +1,34 @@
-#if defined(ESP8266)
 #include <ESP8266WiFi.h>
-#elif defined(ESP32)
-#include <WiFi.h>
-#endif
 #include <ForzaTelemetryAPI.h>
 
-const char* SSID = "WiFi_SSID";
-const char* PASSWORD = "WiFi_Password";
+const char *SSID = "YOUR_WIFI";
+const char *PASSWORD = "YOUR_PASSWORD";
 
-int UDP_PORT = 5300 // Port to read data from - make sure you use the same port in-game.
-
-ForzaAPI forza(UDP_PORT);
+ForzaAPI forza = ForzaAPI();
 
 void setup() {
   Serial.begin(115200);
 
-  WiFi.begin(SSID, PASSWORD); // Connect to WiFi
+  // This is the device IP for your ESP board - make sure you use the same address in-game.
+  Serial.print("Connecting to ");
+  Serial.println(String(SSID));
 
+  WiFi.begin(SSID, PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(100);
+    delay(1000);
     Serial.print(".");
   }
 
-  // This is the device IP for your ESP board - make sure you use the same address in-game.
-  Serial.print("Connected! IP address (use this in-game): ");
+  Serial.print("Connected! IP address: ");
   Serial.println(WiFi.localIP());
 
   Serial.println("Searching for data stream...");
 
   forza.connect();                // Begin UDP connection
-  while (!forza.isConnected()) {} // Wait for the first stream of data to come in
+  while (!forza.isConnected()) {  // Wait for the first stream of data to come in
+    delay(1000);
+    Serial.println(".");
+  }
 
   Serial.println("Data stream received.");
 }
@@ -38,20 +37,54 @@ void setup() {
  * OnDataReceived - this will be called whenever data is received. This is usually
  * once every 33.33ms, or 30 frames per second. Data will not be received here if the game is paused.
  */
-void onDataReceived() {
-  Serial.println(forza.telemetryData->Engine.CurrentRpm);
+void onDataReceived(Telemetry telemetry) {
+    // Access data directly from the data packet
+  Serial.print("Speed (meters/s): ");
+  Serial.print(telemetry.Speed);
+  Serial.print("    -    ");
+
+  // Access data via API helper functions 
+  Serial.print("Speed (meters/s): "); 
+  Serial.print(forza.getSpeed_MetersPerSecond());   
+  Serial.print("    -    ");
+
+  // Access data via API with helper functions
+  Serial.print("Speed (mph): ");
+  Serial.print(forza.getSpeed_MilesPerHour());
+  Serial.print("    -    ");
+  Serial.print("Speed (kph): ");
+  Serial.println(forza.getSpeed_KilometersPerHour());
 }
 
 /*
  * OnCarChanged - this will be called ONCE when the player switches cars (tracked by car ordinal).
  * All relevant data is under the "Car" struct, otherwise use the helper methods which may return more descriptive data.
  */
-void onCarChanged() {
-  Serial.print("New car Performance Index (Number): ");
-  Serial.println(forza.telemetryData->Car.PerformanceIndex); // Returns number value of PI
+void onCarChanged(Car car) {
+   Serial.println("---- New car ---- ");
+  Serial.print("Ordinal: ");
+  Serial.println(car.Ordinal);
 
-  Serial.print("New car Performance Index (Class): ");
-  Serial.println(forza.getCarPerformanceIndex()); // Returns text value of PI
+  // Get text version of car class
+  Serial.print("Class: ");
+  Serial.println(forza.getCarClass());
+  // Serial.print("Class: "); Serial.println(car.Class);
+
+  // Get text version of drivetrain type
+  Serial.print("Drivetrain type: ");
+  Serial.println(forza.getCarDrivetrainType());
+  // Serial.print("Drivetrain type: "); Serial.println(car.DrivetrainType);
+
+  Serial.print("# of cyclinders: ");
+  Serial.println(car.NumCylinders);
+
+  // Get text version of car type
+  Serial.print("Type: ");
+  Serial.println(forza.getCarType());
+  // Serial.print("Type: "); Serial.println(car.Type);
+
+  Serial.print("Performance Index (PI): ");
+  Serial.println(car.PerformanceIndex);
 }
 
 /* 
@@ -60,21 +93,21 @@ void onCarChanged() {
  * updates to OnDataReceived while the game is paused, remove line 58 from 'ForzaTelemetryAPI.cpp'.
  * Please note that the only data that is updated while the game is paused is the Timestamp.
 */
-void onGamePaused() {
+void onGamePaused(Telemetry telemetry) {
   Serial.print("Game paused at ");
-  Serial.println(forza.getTimestampMS());
+  Serial.println(telemetry.TimestampMS);
 }
 
 /* 
  * OnGameUnpaused - this will be called ONCE when the player unpauses the game. Data will begin to be 
  * received in OnDataReceived.
  */
-void onGameUnpaused() {
+void onGameUnpaused(Telemetry telemetry) {
   Serial.print("Game unpaused at ");
-  Serial.println(forza.getTimestampMS());
+  Serial.println(telemetry.TimestampMS);
 }
 
+// Update event listeners 
 void loop() {
-  // Set event listeners 
   forza.receive(onDataReceived, onCarChanged, onGamePaused, onGameUnpaused);
 }
