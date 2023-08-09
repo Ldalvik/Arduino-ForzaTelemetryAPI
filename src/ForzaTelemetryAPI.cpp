@@ -249,5 +249,5 @@ float ForzaAPI::getPower_Watts()
 
 float ForzaAPI::getPower_Horsepower()
 {
-  return telemetryData.Torque * 0.00134102;
+  return telemetryData.Power * 0.00134102;
 }
