@@ -1,7 +1,7 @@
 {
   "name": "ForzaTelemetryAPI",
   "version": "1.0",
-  "keywords": "wifi, Espressif",
+  "keywords": "forza, UDP, telemetry",
   "description": "Receive and parse UDP packets with telemetry data from the Forza Horizon 5 client.",
   "repository":
   {
@@ -9,5 +9,5 @@
     "url": "https://github.com/Ldalvik/Espressif-ForzaTelemetryAPI.git"
   },
   "frameworks": "arduino",
-  "platforms": ["espressif8266", "espressif32"]
+  "platforms": ["espidf"]
 }

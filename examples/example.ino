@@ -1,5 +1,10 @@
+#if defined(ESP8266)
 #include <ESP8266WiFi.h>
-#include <ForzaTelemetryAPI.h>
+#elif defined(ESP32)
+#include <WiFi.h>
+#endif
+
+#include "ForzaTelemetryAPI.h"
 
 const char *SSID = "YOUR_WIFI";
 const char *PASSWORD = "YOUR_PASSWORD";
@@ -56,21 +61,18 @@ void onDataReceived(RawTelemetry telemetry)
   Serial.print(forza.getSpeed_KilometersPerHour());
 
   // Access structured data from the API
-  Serial.print("Accel: ");
-  Serial.print(forza.telemetryData.VehicleControl.Accel);
-  Serial.print(", Brakes: ");
-  Serial.print(forza.telemetryData.VehicleControl.Brake);
-  Serial.print(", Steering: ");
-  Serial.println(forza.telemetryData.VehicleControl.Steer);
-
+  Serial.print("Current RPM: ");
+  Serial.print(forza.telemetryData.Engine.CurrentRpm);
+  Serial.print(", Idle RPM: ");
+  Serial.print(forza.telemetryData.Engine.IdleRpm);
+  Serial.print(", Max RPM: ");
+  Serial.println(forza.telemetryData.Engine.MaxRpm);
 }
 
 /*
  * OnCarChanged - this will be called ONCE when the player switches cars (tracked by car ordinal).
  * All relevant data is under the "Car" struct, onDataReceived will run in the same frame as 
- * onCarChanged, so that frame won't be skipped. If for whatever reason you want to handle the 
- * single frame in the onCarChanged function, uncomment the else statement on line 55 
- * of ForzaTelemetry.cpp, and use the forza.telemetryData struct to get the data.
+ * onCarChanged, so that frame won't be skipped.
  */
 void onCarChanged(Car car)
 {

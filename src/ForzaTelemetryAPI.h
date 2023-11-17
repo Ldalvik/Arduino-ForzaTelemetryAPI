@@ -7,7 +7,6 @@
 class ForzaAPI
 {
 public:
-    const int PACKET_SIZE = 324;
     Telemetry telemetryData; // Named telemetry data schema
 
     using OnDataReceived = std::function<void(RawTelemetry)>;
@@ -18,7 +17,6 @@ public:
     ForzaAPI(const int port = 5300);
     void connect();
     bool isConnected();
-    bool parse();
     void receive(OnDataReceived onDataReceived, OnCarChanged onCarChanged,
                  OnGamePaused onGamePaused, OnGameUnpaused onGameUnpaused);
 
@@ -39,6 +37,8 @@ public:
     float getSteeringAngle();
 
 private:
+    bool parse();
+    const int PACKET_SIZE = 324;
     int port;                      // Assigned UDP port. default 5300
     bool isPaused = false;         // Track last game state
     short lastOrdinal = 0;         // Track last car ordinal

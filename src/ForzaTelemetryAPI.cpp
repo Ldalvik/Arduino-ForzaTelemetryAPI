@@ -1,9 +1,6 @@
 #include "ForzaTelemetryAPI.h"
 
-ForzaAPI::ForzaAPI(const int port)
-{
-  this->port = port;
-}
+ForzaAPI::ForzaAPI(const int port) : port(port) {}
 
 void ForzaAPI::connect()
 {
@@ -52,7 +49,7 @@ void ForzaAPI::receive(OnDataReceived onDataReceived, OnCarChanged onCarChanged,
       onCarChanged(telemetryData.Car);
       lastOrdinal = rawTelemetryData.CarOrdinal;
     }
-    // else         // Uncomment this line if you are handling the onCarChanged frame inside the onCarChanged function
+
     if (!isPaused) // Comment out this line if you want data to be received when the game is paused
       onDataReceived(rawTelemetryData);
   }
@@ -224,7 +221,7 @@ String ForzaAPI::getCarType()
     return "Trucks";
     break;
   default:
-    return "-";
+    return String(telemetryData.Car.Type);
     break;
   }
 }
@@ -246,9 +243,10 @@ float ForzaAPI::getPower_Horsepower()
 
 float ForzaAPI::getSteeringAngle()
 {
+  float steer = static_cast<float>((rawTelemetryData.Steer & 0xff) * 100) / 127;
   if (steer <= 100)
-  {
+  { // 0 -> positive 100 turning right
     return static_cast<float>(steer) - 100.0;
-  }
+  } // 0 -> negative 100 turning left
   return 100.0 - static_cast<float>(steer - 200);
 }

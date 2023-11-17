@@ -164,7 +164,7 @@ struct Race
     f32 CurrentTime;
     u16 LapNumber;
     u8 Position;
-} __attribute__((packed));
+} __attribute__((packed)); // Unaligned struct
 
 struct VehicleControl
 {
@@ -212,20 +212,20 @@ typedef struct _Telemetry
 // Raw telemetry for more explicit access by name
 typedef struct _RawTelemetry
 {
-    s32 IsRaceOn; 
-    u32 TimestampMS;
+    s32 IsRaceOn;         
+    u32 TimestampMS;      
 
-    f32 EngineMaxRpm;
-    f32 EngineIdleRpm;
-    f32 EngineCurrentRpm;
+    f32 EngineMaxRpm;     
+    f32 EngineIdleRpm;    
+    f32 EngineCurrentRpm; 
 
-    f32 AccelerationX;
-    f32 AccelerationY;
-    f32 AccelerationZ;
+    f32 AccelerationX;    
+    f32 AccelerationY;    
+    f32 AccelerationZ;    
 
-    f32 VelocityX;
-    f32 VelocityY;
-    f32 VelocityZ;
+    f32 VelocityX;        
+    f32 VelocityY;        
+    f32 VelocityZ;       
 
     f32 AngularVelocityX;
     f32 AngularVelocityY;

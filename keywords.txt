@@ -1,0 +1,27 @@
+ForzaAPI    KEYWORD1
+
+OnDataReceived  KEYWORD2
+OnCarChanged    KEYWORD2
+OnGamePaused    KEYWORD2
+OnGameUnpaused  KEYWORD2
+
+connect KEYWORD2
+isConnected KEYWORD2
+parse   KEYWORD2
+receive KEYWORD2
+
+getTireSlipAngle_FrontLeft KEYWORD2
+getTireSlipAngle_FrontRight KEYWORD2
+getTireSlipAngle_RearLeft   KEYWORD2
+getTireSlipAngle_RearRight  KEYWORD2
+
+getCarClass  KEYWORD2
+getCarDrivetrainType KEYWORD2
+getCarType  KEYWORD2
+
+getSpeed_MilesPerHour   KEYWORD2
+getSpeed_KilometersPerHour    KEYWORD2
+
+getPower_Horsepower KEYWORD2
+
+getSteeringAngle    KEYWORD2

@@ -1,5 +1,9 @@
+#if defined(ESP8266)
 #include <ESP8266WiFi.h>
-#include <ForzaTelemetryAPI.h>
+#elif defined(ESP32)
+#include <WiFi.h>
+#endif
+#include "ForzaTelemetryAPI.h"
 
 const char *SSID = "YOUR_WIFI";
 const char *PASSWORD = "YOUR_PASSWORD";
